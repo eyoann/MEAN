@@ -1,0 +1,4 @@
+[
+	{"idService" : "0", "nom" : "cours d'informatique", "type" : "cours", "prixNeuf" : "20"},
+ 	{"idService" : "1", "nom" : "cours cuisine", "type" : "cours", "prixNeuf" : "25"}
+]

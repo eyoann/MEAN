@@ -1,0 +1,2 @@
+curl --header "Content-type: application/json" -X POST --data '{"mail":"claire.delune@gmail.com", "nom":"Delune", "prénom":"Claire"}' localhost:8888/membre-inscription
+curl --header "Content-type: application/json" -X POST --data '{"mail":"mouad.hammouni@gmail.com", "nom":"El Hammouni", "prénom":"Mouad"}' localhost:8088/new-client

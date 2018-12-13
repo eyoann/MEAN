@@ -1,0 +1,4 @@
+[
+	{"idBien" : "0", "nom" : "marteau", "type" : "outil", "prixNeuf" : "10"},
+ 	{"idBien" : "1", "nom" : "citreon c3", "type" : "voiture", "prixNeuf" : "10000"}
+]

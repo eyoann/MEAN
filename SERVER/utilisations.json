@@ -1,0 +1,4 @@
+[
+	{"idUtilisations" : "0", "email" : "yoann.eon@outlook.fr", "bienOuServ" : "bien", "idBienOuServ" : "0", "numSem" : "42", "numJour" : "6", "AMPM" : "AM"},
+ 	{"idUtilisations" : "1", "email" : "reda.daoudi@outlook.fr", "bienOuServ" : "service", "idBienOuServ" : "1", "numSem" : "42", "numJour" : "6", "AMPM" : "AM"}
+]

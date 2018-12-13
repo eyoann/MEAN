@@ -1,0 +1,6 @@
+[
+	{"idDisponibilite" : "0", "bienOuServ" : "bien", "idBienOuServ" : "0", "numSem" : "42", "numJour" : "6", "AMPM" : "PM"},
+ 	{"idDisponibilite" : "1", "bienOuServ" : "bien", "idBienOuServ" : "1", "numSem" : "42", "numJour" : "6", "AMPM" : "AM"},
+ 	{"idDisponibilite" : "2", "bienOuServ" : "service", "idBienOuServ" : "0", "numSem" : "42", "numJour" : "6", "AMPM" : "PM"},
+ 	{"idDisponibilite" : "3", "bienOuServ" : "service", "idBienOuServ" : "1", "numSem" : "42", "numJour" : "6", "AMPM" : "AM"}
+]
