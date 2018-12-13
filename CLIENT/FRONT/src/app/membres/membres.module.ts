@@ -5,15 +5,16 @@ import { ListeMembresComponent } from './liste-membres/liste-membres.component';
 import { MembresService } from './membres.service';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
+import { ConnexionComponent } from './connexion/connexion.component';
 
 @NgModule({
-  declarations: [ListeMembresComponent],
+  declarations: [ListeMembresComponent, ConnexionComponent],
   imports: [
     CommonModule,
     BrowserModule,
     HttpClientModule
   ],
-  exports:[ ListeMembresComponent],
+  exports:[ ListeMembresComponent, ConnexionComponent],
   providers: [MembresService],
   bootstrap: []
 })

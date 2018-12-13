@@ -1,0 +1,7 @@
+<p>
+  <button (click)="login()" *ngIf="!isLoggedIn">Login</button>
+  <button (click)="logout()" *ngIf="isLoggedIn">Logout</button>
+</p>
+  <div *ngIf="isLoggedIn">
+  	connexion works!
+  </div>
