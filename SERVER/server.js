@@ -13,6 +13,7 @@ MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {
     assert.equal(null, err);
 
     app.get("/biens", (req, res) => {
+        console.log("route: /biens/");
         db.collection("biens").find().toArray((err, documents)=> {
         // la création de json ne sert à rien ici
         // on pourrait directement renvoyer documents
