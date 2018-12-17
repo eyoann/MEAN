@@ -8,16 +8,17 @@ import { AuthService } from './auth.service';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { ConnexionComponent } from './connexion/connexion.component';
+import { InscriptionComponent } from './inscription/inscription.component';
 
 @NgModule({
-  declarations: [ListeMembresComponent, ConnexionComponent],
+  declarations: [ListeMembresComponent, ConnexionComponent, InscriptionComponent],
   imports: [
     CommonModule,
     BrowserModule,
     HttpClientModule,
     FormsModule
   ],
-  exports:[ ListeMembresComponent, ConnexionComponent],
+  exports:[ ListeMembresComponent, ConnexionComponent,InscriptionComponent],
   providers: [MembresService, AuthService],
   bootstrap: []
 })
