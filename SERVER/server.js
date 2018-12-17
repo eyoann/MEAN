@@ -12,6 +12,12 @@ MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {
     let db = client.db("TROC");
     assert.equal(null, err);
 
+    app.use(function(req, res, next) {
+      res.header("Access-Control-Allow-Origin", "*");
+      res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+      next();
+    });
+
     app.get("/biens", (req, res) => {
         db.collection("biens").find().toArray((err, documents)=> {
         // la création de json ne sert à rien ici
@@ -101,6 +107,21 @@ MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {
         res.end("Update reussie");
     });
     */
+
+    app.get("/connexion/login=:login/password=:password", (req,res) => {
+        console.log("connexion");
+        let login = req.params.login;
+        res.setHeader("Content-type", "text/plain; charset=UTF-8");
+        db.collection("membres").find({"nom" : login}).toArray((err, documents)=> {
+            if(documents !== undefined && documents.length == 1) { 
+                console.log("oui");
+                res.end("1");
+            } else {
+                console.log("non");
+                res.end("0");
+            }
+        });
+    });
 
     app.post("/update-client", (req,res) =>{
         //console.log(nom:);
