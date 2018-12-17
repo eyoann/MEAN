@@ -4,14 +4,15 @@ import { BiensComponent } from './biens/biens.component';
 import { FormsModule } from '@angular/forms';
 
 import { ResearchService } from './research.service';
+import { ResearchComponent } from './research/research.component';
 
 @NgModule({
-  declarations: [BiensComponent],
+  declarations: [BiensComponent, ResearchComponent],
   imports: [
     CommonModule,
     FormsModule
   ],
-  exports:[ BiensComponent],
+  exports:[ BiensComponent, ResearchComponent],
   providers: [ ResearchService]
 })
 export class ProduitModule { }
