@@ -1,7 +1,6 @@
-<p>
-  <button (click)="login()" *ngIf="!isLoggedIn">Login</button>
-  <button (click)="logout()" *ngIf="isLoggedIn">Logout</button>
-</p>
-  <div *ngIf="isLoggedIn">
-  	connexion works!
-  </div>
+<form *ngIf="!isLoggedIn" (ngSubmit)="onSubmit()" #loginForm="ngForm">
+	<input type="text" name="login" id="login" required placeholder="email" [(ngModel)]="login">
+	<input type="password" name="pass" id="pass" placeholder="password" [(ngModel)]="password">
+	<button type="submit">Submit</button>
+</form>
+<button (click)="logout()" *ngIf="isLoggedIn">Logout</button>
