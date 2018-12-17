@@ -29,11 +29,17 @@ MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {
     
     });
     
-    app.get("/biens/:type", (req, res) => {
+    app.get("/biens/:nom/:type/", (req, res) => {
     console.log("route: /biens/:type");
-        db.collection("biens").find({"type":req.params.type}).toArray((err, documents)=> {
+        let filterObject = {};
+        if(req.params.nom != "undefined") { filterObject.nom = req.params.nom; }
+        if(req.params.type != "undefined") { filterObject.type = req.params.type; }
+        console.log(filterObject);
+        db.collection("biens").find(filterObject).toArray((err, documents)=> {
         // la création de json ne sert à rien ici
         // on pourrait directement renvoyer documents
+        console.log(err);
+        console.log(JSON.stringify(documents));
         res.setHeader("Content-type", "application/json");
         res.end(JSON.stringify(documents));
         });
