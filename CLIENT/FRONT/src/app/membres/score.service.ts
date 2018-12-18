@@ -14,7 +14,7 @@ export class ScoreService {
     let score = membre[0]['score'];
     score++;
     membre[0]['score'] = score;
-  	return this.http.post("http://localhost:8888/increase-score",membre[0],{headers : headers});
+  	return this.http.post("http://localhost:8888/change-score",membre[0],{headers : headers});
   }
 
   decrease(membre) {
@@ -23,6 +23,6 @@ export class ScoreService {
     let score = membre[0]['score'];
     score--;
     membre[0]['score'] = score;
-  	return this.http.post("http://localhost:8888/increase-score",membre[0],{headers : headers});
+  	return this.http.post("http://localhost:8888/change-score",membre[0],{headers : headers});
   }
 }
