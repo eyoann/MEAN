@@ -42,6 +42,29 @@ MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {
 
     // ********************************** BIENS ******************************
 
+    // Ajouter un bien
+    app.get("/biens/ajouter/:nom/:type/:descriptif/:lienPhoto/:prixNeuf", (req,res) => {
+    console.log("route sur get : /biens/ajouter");
+    
+    db.collection("biens").insertOne({"nom":req.params.nom,"type":req.params.type,"descriptif":req.params.descriptif,"lienPhoto":req.params.lienPhoto,"prixNeuf":req.params.prixNeuf});
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Content-type", "application/json");
+    //res.setHeader("Content-type", "text/raw"); 
+    res.end(JSON.stringify("bien ajoute"));
+    //res.end("membre ajoute");
+    });
+
+    // Suppression bien
+    app.get("/biens/suppression/:id",(req,res) =>{
+    console.log("route sur get : /biens/suppression");
+    
+    db.collection("biens").deleteOne({"_id":req.params.id});
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Content-type", "application/json");
+    //res.setHeader("Content-type", "text/raw"); 
+    res.end(JSON.stringify("bien supprime"));
+    });
+
     // Liste de tous les biens
     app.get("/biens", (req, res) => {
         console.log("route: /biens/");
@@ -54,11 +77,13 @@ MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {
     
     });
 
-    app.get("/biens/:nom/:type/", (req, res) => {
-    console.log("route: /biens/:type");
+    app.get("/biens/:nom/:type/:descriptif/:prixNeuf", (req, res) => {
+    console.log("route: /biens/:nom/:type/:descriptif/:prixNeuf");
         let filterObject = {};
         if(req.params.nom != "undefined") { filterObject.nom = req.params.nom; }
         if(req.params.type != "undefined") { filterObject.type = req.params.type; }
+        if(req.params.descriptif != "undefined") { filterObject.descriptif = req.params.descriptif; }
+        if(req.params.prixNeuf != "undefined") { filterObject.prixNeuf = req.params.prixNeuf; }
         console.log(filterObject);
         db.collection("biens").find(filterObject).toArray((err, documents)=> {
         // la création de json ne sert à rien ici
@@ -100,30 +125,7 @@ MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {
     });
 
 
-    // ********************************************* BIENS *****************************
-
-    // Ajouter un bien
-    app.get("/biens/ajouter/:nom/:type/:descriptif/:lienPhoto/:prixNeuf", (req,res) => {
-    console.log("route sur get : /biens/ajouter");
     
-    db.collection("biens").insertOne({"nom":req.params.nom,"type":req.params.type,"descriptif":req.params.descriptif,"lienPhoto":req.params.lienPhoto,"prixNeuf":req.params.prixNeuf});
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Content-type", "application/json");
-    //res.setHeader("Content-type", "text/raw"); 
-    res.end(JSON.stringify("bien ajoute"));
-    //res.end("membre ajoute");
-    });
-
-    // Suppression bien
-    app.get("/biens/suppression/:id",(req,res) =>{
-    console.log("route sur get : /biens/suppression");
-    
-    db.collection("biens").deleteOne({"_id":req.params.id});
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Content-type", "application/json");
-    //res.setHeader("Content-type", "text/raw"); 
-    res.end(JSON.stringify("bien supprime"));
-    });
 
     // ****************************** SERVICES ********************************************
     // Ajouter un service
@@ -148,6 +150,37 @@ MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {
     //res.setHeader("Content-type", "text/raw"); 
     res.end(JSON.stringify("service supprime"));
     });  
+
+    // Liste de tous les biens
+    app.get("/services", (req, res) => {
+        console.log("route: /services/");
+        db.collection("services").find().toArray((err, documents)=> {
+        // la création de json ne sert à rien ici
+        // on pourrait directement renvoyer documents
+        res.setHeader("Content-type", "application/json");
+        res.end(JSON.stringify(documents));
+        });
+    
+    });
+
+    app.get("/services/:nom/:type/:descriptif/:prixNeuf", (req, res) => {
+    console.log("route: /services/:nom/:type/:descriptif/:prixNeuf");
+        let filterObject = {};
+        if(req.params.nom != "undefined") { filterObject.nom = req.params.nom; }
+        if(req.params.type != "undefined") { filterObject.type = req.params.type; }
+        if(req.params.descriptif != "undefined") { filterObject.descriptif = req.params.descriptif; }
+        if(req.params.prixNeuf != "undefined") { filterObject.prixNeuf = req.params.prixNeuf; }
+        console.log(filterObject);
+        db.collection("services").find(filterObject).toArray((err, documents)=> {
+        // la création de json ne sert à rien ici
+        // on pourrait directement renvoyer documents
+        console.log(err);
+        console.log(JSON.stringify(documents));
+        res.setHeader("Content-type", "application/json");
+        res.end(JSON.stringify(documents));
+        });
+
+    });
 
     //************************** EMPRUNTS BIENS OU SERVICES ********************************
 

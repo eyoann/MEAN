@@ -8,8 +8,11 @@ import { ResearchService } from '../research.service';
 })
 export class ResearchComponent implements OnInit {
   private objects: Object[];
+  private recherche: string;
   private nom: string;
   private type: string;
+  private descriptif: string;
+  private prixNeuf: string;
 
   constructor(private research : ResearchService) { }
 
@@ -17,6 +20,6 @@ export class ResearchComponent implements OnInit {
   }
 
   onSubmit() {
-  	this.research.getBiens(this.nom, this.type).subscribe(res => this.objects = res);
+  	this.research.getBiens(this.recherche,this.nom, this.type, this.descriptif, this.prixNeuf).subscribe(res => this.objects = res);
   }
 }

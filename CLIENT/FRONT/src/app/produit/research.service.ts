@@ -7,9 +7,15 @@ export class ResearchService {
 
   constructor(private http: HttpClient) { }
 
-  getBiens(nom, type): Observable<any> {
+  getBiens(recherche,nom, type, descriptif,prixNeuf): Observable<any> {
      let observable: Observable<any>;
-     let url = "http://localhost:8888/biens";
+     let url = "http://localhost:8888/";
+     if (recherche=="bien") {
+        url+="biens"; 
+     }
+     else {
+         url+="services"; 
+     }
      if(!nom) {
      	url+="/undefined";
      } else {
@@ -20,6 +26,18 @@ export class ResearchService {
      	url+="/undefined";
      } else {
      	url+="/"+type;
+     }
+
+     if(!descriptif) {
+         url+="/undefined";
+     } else {
+         url+="/"+descriptif;
+     }
+
+     if(!prixNeuf) {
+         url+="/undefined";
+     } else {
+         url+="/"+prixNeuf;
      }
 
      observable =  this.http.get(url);
