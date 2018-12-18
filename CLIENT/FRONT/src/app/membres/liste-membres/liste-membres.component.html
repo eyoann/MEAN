@@ -1,4 +1,4 @@
-<div>
+<div *ngIf="isAdmin">
   Voici la liste des membres :
   <ul>
     <li *ngFor="let membre of membres"> {{membre.prenom}} {{membre.nom}} {{membre.email}} <div class="alert"*ngIf="membre.score>=5"> {{membre.score}} </div> </li>
