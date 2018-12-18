@@ -1,7 +1,7 @@
-<form (ngSubmit)="addBien()">
+<form (ngSubmit)="addService()">
 
 		<div>
-		<h3>Formulaire création bien :</h3><br>
+		<h3>Formulaire création service :</h3><br>
 
 		<label>Nom* : </label><input type="text" id="nom" name="nom" [(ngModel)]="nom">
 		&nbsp;
@@ -23,8 +23,8 @@
 </form>
 <button (click)="update()">UPDATE</button><br>
 <div>
-  Voici la liste de tes biens :
+  Voici la liste de tes services :
   <ul>    
-    <li *ngFor="let bien of biens"> {{bien.nom}} {{bien.type}} {{bien.prixNeuf}} <button (click)="delete(bien)">Delete</button><br></li>
+    <li *ngFor="let service of services"> {{service.nom}} {{service.type}} {{service.prixNeuf}} <button (click)="delete(service)">Delete</button><br></li>
   </ul>
 </div>

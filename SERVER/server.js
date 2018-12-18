@@ -5,6 +5,8 @@ var app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 var MongoClient = require("mongodb").MongoClient;
+const {ObjectId} = require('mongodb');
+
 
 var url = "mongodb://localhost:27017";
 
@@ -24,7 +26,7 @@ MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {
     for (let prop in req.body) {
             console.log(prop+" : "+req.body[prop]);
     }
-    //res.setHeader("Content-type", "text/raw");    
+    //res.setHeader("Content-type", "text/raw");
     res.setHeader("Content-type", "application/json");
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
@@ -32,7 +34,7 @@ MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {
     try {
             db.collection("membres").insertOne(req.body);
         console.log("Insertion reussie");
-        res.end("Insertion réussie");        
+        res.end("Insertion réussie");
     }
     catch(e) {
         console.log("Insertion echouee");
@@ -103,51 +105,69 @@ MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {
     // ********************************************* BIENS *****************************
 
     // Ajouter un bien
-    app.get("/biens/ajouter/:nom/:type/:descriptif/:lienPhoto/:prixNeuf", (req,res) => {
+    app.post("/biens/add", (req,res) => {
     console.log("route sur get : /biens/ajouter");
-    
-    db.collection("biens").insertOne({"nom":req.params.nom,"type":req.params.type,"descriptif":req.params.descriptif,"lienPhoto":req.params.lienPhoto,"prixNeuf":req.params.prixNeuf});
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Content-type", "application/json");
-    //res.setHeader("Content-type", "text/raw"); 
-    res.end(JSON.stringify("bien ajoute"));
-    //res.end("membre ajoute");
+        try {
+            db.collection("biens").insertOne({"nom":req.body.nom, "type": req.body.type, "prixNeuf": req.body.prix, "membre": req.body.membre}, function(err,docsInserted){
+                db.collection("disponibilites").insertOne({"bienOuServ": "bien", "idBienOuServ": docsInserted["ops"][0]["_id"],"numSem" : req.body.semaine, "numJour" : req.body.jour, "AMPM" : req.body.horaire })
+            });
+
+            console.log("Insertion reussie");
+            res.end("Insertion réussie");
+        }
+        catch(e) {
+            console.log("Insertion echouee");
+            res.end("Error "+e);
+        }
+    });
+
+    //Biens from membre
+    app.get("/biens/membre=:membre", (req,res) => {
+        db.collection("biens").find({"membre": req.params.membre}).toArray((err, documents)=> {
+            res.end(JSON.stringify(documents));
+        });
     });
 
     // Suppression bien
-    app.get("/biens/suppression/:id",(req,res) =>{
-    console.log("route sur get : /biens/suppression");
-    
-    db.collection("biens").deleteOne({"_id":req.params.id});
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Content-type", "application/json");
-    //res.setHeader("Content-type", "text/raw"); 
-    res.end(JSON.stringify("bien supprime"));
+    app.get("/biens-suppression/:id",(req,res) =>{
+        console.log(req.params.id);
+        db.collection("disponibilites").deleteOne({"idBienOuServ": ObjectId(req.params.id)});
+        db.collection("biens").deleteOne({"_id": ObjectId(req.params.id)});
+        res.end(JSON.stringify("bien supprime"));
     });
 
     // ****************************** SERVICES ********************************************
     // Ajouter un service
-    app.get("/services/ajouter/:nom/:type/:descriptif/:prix", (req,res) => {
-    console.log("route sur get : /services/ajouter");
-    
-    db.collection("services").insertOne({"nom":req.params.nom,"type":req.params.type,"descriptif":req.params.descriptif,"prix":req.params.prix});
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Content-type", "application/json");
-    //res.setHeader("Content-type", "text/raw"); 
-    res.end(JSON.stringify("bien ajoute"));
-    //res.end("membre ajoute");
-    });  
+    app.post("/services/add", (req,res) => {
+        console.log("route sur get : /services/ajouter");
+        try {
+            db.collection("services").insertOne({"nom":req.body.nom, "type": req.body.type, "prixNeuf": req.body.prix, "membre": req.body.membre}, function(err,docsInserted){
+                db.collection("disponibilites").insertOne({"bienOuServ": "service", "idBienOuServ": docsInserted["ops"][0]["_id"],"numSem" : req.body.semaine, "numJour" : req.body.jour, "AMPM" : req.body.horaire })
+            });
+
+            console.log("Insertion reussie");
+            res.end("Insertion réussie");
+        }
+        catch(e) {
+            console.log("Insertion echouee");
+            res.end("Error "+e);
+        }
+    });
+
+    //Services from membre
+    app.get("/services/membre=:membre", (req,res) => {
+        db.collection("services").find({"membre": req.params.membre}).toArray((err, documents)=> {
+            console.log(JSON.stringify(documents));
+            res.end(JSON.stringify(documents));
+        });
+    });
 
     // Suppression services
-    app.get("/services/suppression/:id",(req,res) =>{
-    console.log("route sur get : /services/suppression");
-    
-    db.collection("biens").deleteOne({"_id":req.params.id});
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Content-type", "application/json");
-    //res.setHeader("Content-type", "text/raw"); 
-    res.end(JSON.stringify("service supprime"));
-    });  
+    app.get("/services-suppression/:id",(req,res) =>{
+        db.collection("disponibilites").deleteOne({"idBienOuServ": ObjectId(req.params.id)});
+        db.collection("services").deleteOne({"_id": ObjectId(req.params.id)});
+        res.end(JSON.stringify("bien supprime"));
+    });
 
     //************************** EMPRUNTS BIENS OU SERVICES ********************************
 
@@ -234,10 +254,10 @@ MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {
         db.collection("membres").find({"nom" : login}).toArray((err, documents)=> {
             if(documents !== undefined && documents.length == 1) { 
                 console.log("oui");
-                res.end("1");
+                res.end(JSON.stringify(documents));
             } else {
                 console.log("non");
-                res.end("0");
+                res.end(JSON.stringify(documents));
             }
         });
     });
