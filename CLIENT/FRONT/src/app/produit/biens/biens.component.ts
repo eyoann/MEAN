@@ -18,7 +18,7 @@ export class BiensComponent implements OnInit {
   constructor(private auth: AuthService, private bienS: BienService) { }
 
   ngOnInit() {
-  	//this.bienS.getBiens(this.auth.membre).subscribe(res => this.biens = res);
+  	this.bienS.getBiens(this.auth.membre).subscribe(res => this.biens = res);
   }
 
   addBien() {

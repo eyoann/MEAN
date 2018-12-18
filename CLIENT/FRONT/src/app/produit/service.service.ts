@@ -36,4 +36,13 @@ export class ServiceService {
   	return this.http.get(url);
   }
 
+  getLocation(membre) {
+    let url = "http://localhost:8888/services-location/membre="+membre[0]['email'];
+    return this.http.get(url);
+  }
+
+  rendre(service) {
+    let url = "http://localhost:8888/service-rendre/"+service._id;
+    return this.http.get(url);
+  }
 }

@@ -9,7 +9,7 @@ export class BienService {
 
   constructor(private http: HttpClient) { }
 
-  add(nom, type, prix, semaine, jour, horaire, membre) { 
+  add(nom, type, prix, semaine, jour, horaire, membre) {
   	let headers = new HttpHeaders();
     headers.set('Content-type','application/json');
     console.log(membre);
@@ -37,5 +37,15 @@ export class BienService {
   	console.log(bien._id);
   	let url = "http://localhost:8888/biens-suppression/"+bien._id;
   	return this.http.get(url);
+  }
+
+  getLocation(membre) {
+    let url = "http://localhost:8888/biens-location/membre="+membre[0]['email'];
+    return this.http.get(url);
+  }
+
+  rendre(bien) {
+    let url = "http://localhost:8888/biens-rendre/"+bien._id;
+    return this.http.get(url);
   }
 }

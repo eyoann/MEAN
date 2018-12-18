@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 
 import { MembresService } from './membres.service';
 import { AuthService } from './auth.service';
+import { AuthguardService } from './authguard.service'
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { ConnexionComponent } from './connexion/connexion.component';
@@ -19,7 +20,7 @@ import { InscriptionComponent } from './inscription/inscription.component';
     FormsModule
   ],
   exports:[ ListeMembresComponent, ConnexionComponent,InscriptionComponent],
-  providers: [MembresService, AuthService],
+  providers: [MembresService, AuthService, AuthguardService],
   bootstrap: []
 })
 export class MembresModule { }

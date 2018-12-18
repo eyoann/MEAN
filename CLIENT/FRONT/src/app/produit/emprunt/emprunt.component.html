@@ -1,0 +1,12 @@
+<div>
+  Voici la liste de tes biens empruntés :
+  <ul>
+    <li *ngFor="let bien of biens"> {{bien.nom}} {{bien.type}} {{bien.prixNeuf}} <button (click)="rendreBien(bien)">Rendre</button><br></li>
+  </ul>
+</div>
+<div>
+  Voici la liste de tes services empruntés :
+  <ul>
+    <li *ngFor="let service of services"> {{service.nom}} {{service.type}} {{service.prixNeuf}} <button (click)="rendreService(service)">Rendre</button><br></li>
+  </ul>
+</div>

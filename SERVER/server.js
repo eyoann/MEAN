@@ -226,15 +226,54 @@ MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {
 
     //************************** EMPRUNTS BIENS OU SERVICES ********************************
 
-    // Emprunt bien et service
-    app.get("/disponibilites/emprunt/:id",(req,res) =>{
-    console.log("route sur get : /disponibilites/suppression");
-    
-    db.collection("disponibilites").deleteOne({"_id":req.params.id});
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Content-type", "application/json");
-    //res.setHeader("Content-type", "text/raw"); 
-    res.end(JSON.stringify("disponibilite spprimer"));
+    // Emprunt bien
+    app.get("/biens-location/membre=:membre",(req,res) =>{
+
+        db.collection("utilisations").find({"email":req.params.membre}).toArray((err, documents)=> {
+            console.log(JSON.stringify(documents));
+            let biens = [];
+            let nbResultats = documents.length;
+            let numResultats = 0;
+            for(let doc of documents) {
+                db.collection("biens").find({"_id": doc.idBienOuServ}).toArray((err, documents)=> {
+                    if(documents[0] != null) biens.push(documents[0]);
+                    numResultats++;
+                    if (numResultats == nbResultats) res.end(JSON.stringify(biens));
+               });
+            }
+        });
+
+    });
+
+    //Rendre bien
+    app.get("/biens-rendre/:id",(req,res) =>{
+        db.collection("utilisations").deleteOne({"_id": ObjectId(req.params.id)});
+        db.collection("disponibilites").insertOne({"bienOuServ": "bien", "idBienOuServ": ObjectId(req.params.id)});
+    });
+
+    // Emprunt service
+    app.get("/services-location/membre=:membre",(req,res) =>{
+
+        db.collection("utilisations").find({"email":req.params.membre}).toArray((err, documents)=> {
+            console.log(JSON.stringify(documents));
+            let biens = [];
+            let nbResultats = documents.length;
+            let numResultats = 0;
+            for(let doc of documents) {
+                db.collection("services").find({"_id": doc.idBienOuServ}).toArray((err, documents)=> {
+                    if(documents[0] != null) biens.push(documents[0]);
+                    numResultats++;
+                    if (numResultats == nbResultats) res.end(JSON.stringify(biens));
+               });
+            }
+        });
+
+    });
+
+    //Rendre service
+    app.get("/services-rendre/:id",(req,res) =>{
+        db.collection("utilisations").deleteOne({"_id": ObjectId(req.params.id)});
+        db.collection("disponibilites").insertOne({"bienOuServ": "bien", "idBienOuServ": ObjectId(req.params.id)});
     });
 
     // Ajouter disponibilité
