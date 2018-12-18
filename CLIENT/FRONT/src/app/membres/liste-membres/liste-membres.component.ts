@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MembresService } from '../membres.service';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-liste-membres',
@@ -8,10 +9,19 @@ import { MembresService } from '../membres.service';
 })
 export class ListeMembresComponent implements OnInit {
   private membres: Object[];
+  //private role:string;
+  private isAdmin:boolean = false;
 
-  constructor(private membresService: MembresService) { }
+  constructor(private auth: AuthService, private membresService: MembresService) { }
 
   ngOnInit() {
-     this.membresService.getMembres().subscribe(res => this.membres = res);
+     this.membresService.getMembres().subscribe(res => {
+     	this.membres = res;
+     	if(this.auth.membre[0]['role']=="admin") this.isAdmin = true;
+     	//this.role = this.auth.membre[0]['role'];
+     	console.log(this.membres);
+     	console.log("role = "+this.auth.membre[0]['role']);
+     	//console.log("role = "+this.role);
+     	});
   }
 }
