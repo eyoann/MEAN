@@ -23,7 +23,7 @@
 </form>
 <button (click)="update()">UPDATE</button><br>
 <div>
-  Voici la liste de tes biens :
+  Voici la liste de mes biens :
   <ul>    
     <li *ngFor="let bien of biens"> {{bien.nom}} {{bien.type}} {{bien.prixNeuf}} <button (click)="delete(bien)">Delete</button><br></li>
   </ul>

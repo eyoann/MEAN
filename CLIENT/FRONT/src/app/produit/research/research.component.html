@@ -17,6 +17,6 @@
 <div>
   Resultat de recherche :
   <ul>
-    <li *ngFor="let object of objects"> Nom : {{object.nom}} | Type : {{object.type}} | Prix : {{object.prixNeuf}} €</li>
+    <li *ngFor="let object of objects"> Nom : {{object.nom}} | Type : {{object.type}} | Prix : {{object.prixNeuf}} €  <button (click)="emprunter(object)">Emprunter</button><br></li>
   </ul>
 </div>

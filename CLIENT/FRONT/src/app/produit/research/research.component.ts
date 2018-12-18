@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ResearchService } from '../research.service';
+import { AuthService } from '../../membres/auth.service';
 
 @Component({
   selector: 'app-research',
@@ -14,12 +15,18 @@ export class ResearchComponent implements OnInit {
   private descriptif: string;
   private prixNeuf: string;
 
-  constructor(private research : ResearchService) { }
+  constructor(private auth: AuthService, private research : ResearchService) { }
 
   ngOnInit() {
   }
 
   onSubmit() {
-  	this.research.getBiens(this.recherche,this.nom, this.type, this.descriptif, this.prixNeuf).subscribe(res => this.objects = res);
+  	this.research.getBiens(this.recherche,this.nom, this.type, this.descriptif, this.prixNeuf).subscribe(res => this.objects = res );
+  }
+
+  emprunter(objet)
+  {
+  	console.log(this.recherche);
+  	this.research.emprunter(this.auth.membre,this.recherche,objet).subscribe(res => console.log(res));
   }
 }

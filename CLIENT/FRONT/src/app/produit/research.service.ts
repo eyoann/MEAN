@@ -43,4 +43,14 @@ export class ResearchService {
      observable =  this.http.get(url);
      return observable;
   }
+
+  emprunter(membre,bienOuservice,objet):Observable<any>{
+      console.log("membre = "+membre);
+      console.log("email = "+membre[0]['email']);
+      console.log("bienOuService = "+bienOuservice);
+      console.log("objet id = "+objet._id);
+
+      let url = "http://localhost:8888/emprunt/"+membre[0]['email']+"/"+bienOuservice+"/"+objet._id;
+      return this.http.get(url);
+  }
 }

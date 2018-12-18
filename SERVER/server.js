@@ -67,17 +67,37 @@ MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {
     res.end(JSON.stringify("bien supprime"));
     });
 
-    // Liste de tous les biens
-    app.get("/biens", (req, res) => {
-        console.log("route: /biens/");
-        db.collection("biens").find().toArray((err, documents)=> {
-        // la création de json ne sert à rien ici
-        // on pourrait directement renvoyer documents
-        res.setHeader("Content-type", "application/json");
-        res.end(JSON.stringify(documents));
-        });
+    // // Liste de tous les biens
+    // app.get("/biens", (req, res) => {
+    //     console.log("route: /biens/");
+    //     db.collection("biens").find().toArray((err, documents)=> {
+    //     // la création de json ne sert à rien ici
+    //     // on pourrait directement renvoyer documents
+    //     console.log(documents);
+    //     res.setHeader("Content-type", "application/json");
+    //     res.end(JSON.stringify(documents));
+    //     });
     
-    });
+    // });
+
+    // app.get("/biens/:nom/:type/:descriptif/:prixNeuf", (req, res) => {
+    // console.log("route: /biens/:nom/:type/:descriptif/:prixNeuf");
+    //     let filterObject = {};
+    //     if(req.params.nom != "undefined") { filterObject.nom = req.params.nom; }
+    //     if(req.params.type != "undefined") { filterObject.type = req.params.type; }
+    //     if(req.params.descriptif != "undefined") { filterObject.descriptif = req.params.descriptif; }
+    //     if(req.params.prixNeuf != "undefined") { filterObject.prixNeuf = req.params.prixNeuf; }
+    //     console.log(filterObject);
+    //     db.collection("biens").find(filterObject).toArray((err, documents)=> {
+    //     // la création de json ne sert à rien ici
+    //     // on pourrait directement renvoyer documents
+    //     console.log(err);
+    //     console.log(JSON.stringify(documents));
+    //     res.setHeader("Content-type", "application/json");
+    //     res.end(JSON.stringify(documents));
+    //     });
+
+    // });
 
     app.get("/biens/:nom/:type/:descriptif/:prixNeuf", (req, res) => {
     console.log("route: /biens/:nom/:type/:descriptif/:prixNeuf");
@@ -86,15 +106,58 @@ MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {
         if(req.params.type != "undefined") { filterObject.type = req.params.type; }
         if(req.params.descriptif != "undefined") { filterObject.descriptif = req.params.descriptif; }
         if(req.params.prixNeuf != "undefined") { filterObject.prixNeuf = req.params.prixNeuf; }
-        console.log(filterObject);
-        db.collection("biens").find(filterObject).toArray((err, documents)=> {
-        // la création de json ne sert à rien ici
-        // on pourrait directement renvoyer documents
-        console.log(err);
-        console.log(JSON.stringify(documents));
+        //console.log(filterObject);
+
+        db.collection("disponibilites").find().toArray((err, documents)=> {
+            let collectionBienDispo = [];
         res.setHeader("Content-type", "application/json");
-        res.end(JSON.stringify(documents));
-        });
+        let nbResultats = documents.length;
+        let numResultats = 0;
+            for (let doc of documents) {
+                filterObject._id = doc.idBienOuServ;
+               db.collection("biens").find(filterObject).toArray((err, documents)=> {
+                if(documents[0]!=null)
+               collectionBienDispo.push(documents[0]);
+           numResultats++;
+            if (numResultats == nbResultats) {
+                console.log(JSON.stringify(collectionBienDispo));
+                res.end(JSON.stringify(collectionBienDispo));
+                }
+               });
+            }
+
+    }); 
+
+    });
+
+    app.get("/services/:nom/:type/:descriptif/:prixNeuf", (req, res) => {
+    console.log("route: /biens/:nom/:type/:descriptif/:prixNeuf");
+        let filterObject = {};
+        if(req.params.nom != "undefined") { filterObject.nom = req.params.nom; }
+        if(req.params.type != "undefined") { filterObject.type = req.params.type; }
+        if(req.params.descriptif != "undefined") { filterObject.descriptif = req.params.descriptif; }
+        if(req.params.prixNeuf != "undefined") { filterObject.prixNeuf = req.params.prixNeuf; }
+        //console.log(filterObject);
+
+        db.collection("disponibilites").find().toArray((err, documents)=> {
+            let collectionBienDispo = [];
+        res.setHeader("Content-type", "application/json");
+        let nbResultats = documents.length;
+        let numResultats = 0;
+            for (let doc of documents) {
+                filterObject._id = doc.idBienOuServ;
+               db.collection("services").find(filterObject).toArray((err, documents)=> {
+                if(documents[0]!=null)
+               collectionBienDispo.push(documents[0]);
+           numResultats++;
+            if (numResultats == nbResultats) {
+                console.log(JSON.stringify(collectionBienDispo));
+                res.end(JSON.stringify(collectionBienDispo));
+                }
+               });
+            }
+
+    }); 
 
     });
 
@@ -158,6 +221,37 @@ MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {
         db.collection("disponibilites").deleteOne({"idBienOuServ": ObjectId(req.params.id)});
         db.collection("biens").deleteOne({"_id": ObjectId(req.params.id)});
         res.end(JSON.stringify("bien supprime"));
+    });
+
+    app.get("/emprunt/:email/:bienOuService/:idBienOuService",(req,res) =>{
+        console.log("DANS L'EMPRUNT");
+        console.log(req.params.email);
+        console.log(req.params.bienOuService);
+        console.log(req.params.idBienOuService);
+        db.collection("disponibilites").deleteOne({"idBienOuServ": ObjectId(req.params.idBienOuService)});
+        let filterObject = {};
+        filterObject.email = req.params.email;
+        filterObject.bienOuServ = req.params.bienOuService;
+        filterObject.idBienOuService = req.params.idBienOuService;
+        db.collection("utilisations").insertOne(filterObject);
+        res.end(JSON.stringify("bien ou service emprunter"));
+    });
+
+    app.get("/biens/biens-disponibles", (req, res) => {
+    console.log("route: /biens/test");
+        db.collection("disponibilites").find().toArray((err, documents)=> {
+            let collectionBienDispo = [];
+        res.setHeader("Content-type", "application/json");
+        let nbResultats = documents.length;
+        let numResultats = 0;
+            for (let doc of documents) {
+               db.collection("biens").find({"_id":doc.idBienOuServ}).toArray((err, documents)=> {
+               collectionBienDispo.push(documents[0]);
+           numResultats++;
+            if (numResultats == nbResultats) res.end(JSON.stringify(collectionBienDispo));
+               });
+            }
+    }); 
     });
 
     // ****************************** SERVICES ********************************************
@@ -250,6 +344,20 @@ MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {
 
     // ************************ DISPONIBILITES ****************************************
 
+    app.get("/disponibilites", (req, res) => {
+    console.log("route: /disponibilites");
+    db.collection("disponibilites").find().toArray((err, documents)=> {
+    // la création de json ne sert à rien ici
+    // on pourrait directement renvoyer documents
+    console.log(err);
+    console.log(JSON.stringify(documents));
+    res.setHeader("Content-type", "application/json");
+    res.end(JSON.stringify(documents));
+    });
+
+    });
+
+
 
     // Afficher les disponibilités par type
     app.get("/disponibles/:type", (req, res) => {
@@ -305,8 +413,9 @@ MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {
     app.get("/connexion/login=:login/password=:password", (req,res) => {
         console.log("connexion");
         let login = req.params.login;
+        let password = req.params.password;
         res.setHeader("Content-type", "text/plain; charset=UTF-8");
-        db.collection("membres").find({"nom" : login}).toArray((err, documents)=> {
+        db.collection("membres").find({"nom" : login, "mdp" : password}).toArray((err, documents)=> {
             if(documents !== undefined && documents.length == 1) { 
                 console.log("oui");
                 res.end(JSON.stringify(documents));
