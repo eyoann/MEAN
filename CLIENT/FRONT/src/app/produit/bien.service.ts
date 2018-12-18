@@ -13,7 +13,6 @@ export class BienService {
   	let headers = new HttpHeaders();
     headers.set('Content-type','application/json');
     console.log(membre);
-    let url: string = "http://localhost:8888/membre-inscription";
 
     var param ={
       'nom' : nom,
@@ -40,6 +39,7 @@ export class BienService {
   }
 
   getLocation(membre) {
+    console.log(membre[0]['email']);
     let url = "http://localhost:8888/biens-location/membre="+membre[0]['email'];
     return this.http.get(url);
   }

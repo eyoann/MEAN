@@ -14,6 +14,8 @@ export class EmpruntComponent implements OnInit {
   constructor(private auth: AuthService, private bienS: BienService, private servS: ServiceService) { }
 
   ngOnInit() {
+  	console.log("toto");
+  	console.log(this.auth.membre);
   	this.bienS.getLocation(this.auth.membre).subscribe(res => this.biens = res);
   	this.servS.getLocation(this.auth.membre).subscribe(res => this.services = res);
   }

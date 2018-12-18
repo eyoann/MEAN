@@ -42,7 +42,7 @@ export class ServiceService {
   }
 
   rendre(service) {
-    let url = "http://localhost:8888/service-rendre/"+service._id;
+    let url = "http://localhost:8888/services-rendre/"+service._id;
     return this.http.get(url);
   }
 }
