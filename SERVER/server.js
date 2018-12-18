@@ -58,6 +58,12 @@ MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {
     
     });
 
+    app.post("/change-score", (req,res) => {
+        console.log(req.body);
+        db.collection("membres").updateOne({'email':req.body.email}, {$set:{'score':req.body.score}});
+        res.end(JSON.stringify(req.body.score));
+    });
+
     // ********************************** BIENS ******************************
 
     // Ajouter un bien

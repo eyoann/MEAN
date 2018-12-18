@@ -34,7 +34,8 @@ export class MembresService {
       'email' : email,
       'mdp' : mdp,
       'sexe ': sexe,
-      'mobile' : mobile
+      'mobile' : mobile,
+      'score' :  0
     };
 
     return this.http.post("http://localhost:8888/membre-inscription",param,{headers : headers});

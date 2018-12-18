@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ResearchService } from '../research.service';
 import { AuthService } from '../../membres/auth.service';
+import { ScoreService } from '../../membres/score.service';
 
 @Component({
   selector: 'app-research',
@@ -15,7 +16,7 @@ export class ResearchComponent implements OnInit {
   private descriptif: string;
   private prixNeuf: string;
 
-  constructor(private auth: AuthService, private research : ResearchService) { }
+  constructor(private auth: AuthService, private research : ResearchService, private score: ScoreService) { }
 
   ngOnInit() {
   }
@@ -27,6 +28,7 @@ export class ResearchComponent implements OnInit {
   emprunter(objet)
   {
   	console.log(this.recherche);
+    this.score.increase(this.auth.membre).subscribe(res => console.log(res));
   	this.research.emprunter(this.auth.membre,this.recherche,objet).subscribe(res => console.log(res));
   }
 }
