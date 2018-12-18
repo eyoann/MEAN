@@ -55,7 +55,7 @@ MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {
         //res.setHeader("Content-type", "application/json");
         res.end(JSON.stringify(documents));
         });
-    
+
     });
 
     app.post("/change-score", (req,res) => {
