@@ -6,12 +6,13 @@ import { map } from 'rxjs/operators';
 @Injectable()
 export class AuthService {
   isLoggedIn: boolean = false;
+  membre : Object;
 
   constructor(private http: HttpClient) { }
 
-  connexion(login, password) : Observable<boolean> {
+  connexion(login, password) : Observable<any> {
      let url: string = "http://localhost:8888/connexion/login="+login+"/password="+password;
-     return this.http.get<boolean>(url);
+     return this.http.get(url);
   }
 
   LoggedIn() {return this.isLoggedIn;}

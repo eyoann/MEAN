@@ -17,11 +17,15 @@
     <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
   </li>
 </ul>
-<app-liste-membres></app-liste-membres>
 <app-connexion></app-connexion>
 <app-inscription></app-inscription>
+
 <br><br>
 <a routerLink="/researchProduit">De quoi avez-vous besoin ?</a>
 <router-outlet></router-outlet>
 
-<app-biens></app-biens>
+{{ auth.LoggedIn() }}
+  <app-liste-membres></app-liste-membres>
+  <app-research></app-research>
+  <app-biens></app-biens>
+  <app-services></app-services>

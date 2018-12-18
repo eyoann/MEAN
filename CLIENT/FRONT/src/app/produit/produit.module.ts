@@ -6,13 +6,17 @@ import { FormsModule } from '@angular/forms';
 import { ResearchService } from './research.service';
 import { ResearchComponent } from './research/research.component';
 
+import { BienService } from './bien.service';
+import { ServiceService } from './service.service';
+import { ServicesComponent } from './services/services.component';
+
 @NgModule({
-  declarations: [BiensComponent, ResearchComponent],
+  declarations: [BiensComponent, ResearchComponent, ServicesComponent],
   imports: [
     CommonModule,
     FormsModule
   ],
-  exports:[ BiensComponent, ResearchComponent],
-  providers: [ ResearchService]
+  exports:[ BiensComponent, ResearchComponent, ServicesComponent],
+  providers: [ ResearchService, BienService, ServiceService]
 })
 export class ProduitModule { }
